@@ -1,0 +1,190 @@
+timestamp: 2016-03-16T00:32:55.504000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2016-03-16T00:32:55.725000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T00:32:55.858000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2016-03-16T00:32:56.024000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2016-03-16T00:32:56.221000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T00:32:56.366000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2016-03-16T01:04:59.804000
+CREATE TABLE user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email CHAR(128) NOT NULL UNIQUE,
+    mobile CHAR(10),
+    username CHAR(25) UNIQUE,
+    password CHAR(512) NOT NULL,
+    user_type CHAR(512),
+    dob DATE,
+    gender CHAR(512),
+    first_name CHAR(128),
+    last_name CHAR(128),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512),
+    otp_token INTEGER,
+    otp_last_count INTEGER,
+    propic CHAR(512),
+    created_on TIMESTAMP
+);
+success!
+success!
+timestamp: 2016-03-16T01:09:47.220000
+CREATE TABLE user_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T01:09:47.451000
+CREATE TABLE user_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2016-03-16T01:09:47.683000
+CREATE TABLE user_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2016-03-16T01:09:47.917000
+CREATE TABLE user_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T01:09:48.138000
+CREATE TABLE user_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2016-03-16T01:38:16.749000
+CREATE TABLE sellinng_item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    seller CHAR(512),
+    category CHAR(512),
+    sub_cat CHAR(512),
+    bill_av CHAR(1),
+    min_bid CHAR(512),
+    max_bid CHAR(512),
+    view_count INTEGER,
+    status INTEGER,
+    image CHAR(512)
+);
+success!
+timestamp: 2016-03-16T01:38:17.090000
+CREATE TABLE item_bid(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bidder CHAR(512),
+    sellinng_item_id CHAR(512),
+    amount CHAR(512),
+    status CHAR(512)
+);
+success!
+success!
+success!
+success!
+timestamp: 2016-03-16T02:44:25.300000
+CREATE TABLE user_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T02:44:25.516000
+CREATE TABLE user_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2016-03-16T02:44:30.137000
+CREATE TABLE user_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2016-03-16T02:44:36.440000
+CREATE TABLE user_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2016-03-16T02:44:36.658000
+CREATE TABLE user_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
