@@ -89,6 +89,23 @@ db.define_table('user',
     format= "%(first_name)s"
 )
 
+#his table should contain all the other attrbutes of a user related to diffrent modules
+db.define_table('user_atrs',
+    Field('user'),
+    Field('blocked_bids'),
+    Field('prim_add'),
+    Field('sec_add'),
+    Field('prim_lat'),
+    Field('prim_longi'),
+    Field('sec_lat'),
+    Field('sec_longi'),
+    Field('user_stars'),
+    Field('profile_img'),
+    Field('about_me'),
+    Field('referal_code'),
+    format="%(user)s"
+    )
+
 
 # Validating user-anle fields
 
