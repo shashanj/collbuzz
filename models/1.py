@@ -68,11 +68,53 @@ mail.settings.login = myconf.take('smtp.login')
 
 
 
+######################################### 
+## use fb auth ## for facebook "graphbook" application 
+#########################################
+import sys,os
+from fbappauth import CLIENT_ID,CLIENT_SECRET
+from facebook import GraphAPI, GraphAPIError
+from gluon.contrib.login_methods.oauth20_account import OAuthAccount
+
+################ 
+
+## For Facebook Login
+
+###############
+
+class FaceBookAccount(OAuthAccount):
+    """ OAuth impl for Facebook"""
+    AUTH_URL="https://graph.facebook.com/oauth/authorize"
+    TOKEN_URL="https://graph.facebook.com/oauth/access_token"
+    def __init__(self,g):
+        OAuthAccount.__init__(self,g,CLIENT_ID,CLIENT_SECRET,self.AUTH_URL,self.TOKEN_URL,
+            scope='public_profile,email')
+        self.graph=None
+    def get_user(self):
+        ''' Returns the user using the Graph api'''
+        if not self.accessToken():
+            return None
+        if not self.graph:
+            self.graph=GraphAPI((self.accessToken()))
+            user=None
+
+        try:
+            args = {'fields' : 'id,first_name,last_name,email' }
+
+            user=self.graph.get_object("me",**args)
+        except GraphAPIError, e:
+            self.session.token=None
+            self.graph =None
+        if user:
+            print user
+            return dict(first_name=user['first_name'], last_name=user['last_name'],
+                username=user['id'],email=user['email'],password='default')
+
 db.define_table('user',
     Field('email', length=128, label=T('Email'),unique=True, notnull=True),
     Field('mobile', length=10, label=T('Mobile No.')),
     Field('username', length=25, label=T('User name'), unique=True),
-    Field('password', 'password', readable=True, label=T('Password'), notnull=True, requires=CRYPT()),
+    Field('password', 'password', readable=True, label=T('Password'),),
     Field('user_type'),
     Field('dob', 'date', label=T('DOB')),
     Field('gender', 'string', label=T('Gender')),
@@ -110,7 +152,7 @@ db.define_table('user_atrs',
 # Validating user-anle fields
 
 db.user.username.requires = [IS_NOT_EMPTY(error_message = "Enter a Username!"), IS_NOT_IN_DB(db, db.user.username, error_message = "Username already exists!") ]
-db.user.password.requires = [IS_NOT_EMPTY(error_message = "Enter a Password!"),CRYPT()]
+# db.user.password.requires = [IS_NOT_EMPTY(error_message = "Enter a Password!"),CRYPT()]
 db.user.mobile.requires = [IS_NOT_EMPTY(error_message = "Enter a Mobile No.!"),IS_MATCH(r'^([7-9]{1})([0-9]{9})$', error_message=T('Enter a Valid phone number')),IS_NOT_IN_DB(db, db.user.mobile, error_message = "Mobile No. already exists!")]
 db.user.email.requires = [IS_LOWER(),IS_EMAIL(error_message = "Invalid Email!"), IS_NOT_IN_DB(db, db.user.email, error_message = "Email ID already exists!")]
 db.user.gender.requires = IS_IN_SET(('Male', 'Female',''))
@@ -128,6 +170,19 @@ auth.settings.table_cas_name='user_cas'
 auth.settings.create_user_groups = None
 
 auth.define_tables();
+
+#################################
+
+## FaceBookAccount
+
+################################
+
+# Activate Below lines when adding facebook authentication
+
+# auth.settings.actions_disabled=['register',
+#    'change_password','request_reset_password','profile']
+# auth.settings.login_form=FaceBookAccount(globals())
+
 
 auth.messages.invalid_login = 'Invalid login'
 auth.messages.registration_verifying="Please verify your email"

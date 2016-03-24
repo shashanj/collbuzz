@@ -1,65 +1,10 @@
-timestamp: 2016-03-16T00:32:55.504000
-CREATE TABLE auth_user(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name CHAR(128),
-    last_name CHAR(128),
-    email CHAR(512),
-    password CHAR(512),
-    registration_key CHAR(512),
-    reset_password_key CHAR(512),
-    registration_id CHAR(512)
-);
-success!
-timestamp: 2016-03-16T00:32:55.725000
-CREATE TABLE auth_group(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    role CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2016-03-16T00:32:55.858000
-CREATE TABLE auth_membership(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
-);
-success!
-timestamp: 2016-03-16T00:32:56.024000
-CREATE TABLE auth_permission(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
-    name CHAR(512),
-    table_name CHAR(512),
-    record_id INTEGER
-);
-success!
-timestamp: 2016-03-16T00:32:56.221000
-CREATE TABLE auth_event(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    time_stamp TIMESTAMP,
-    client_ip CHAR(512),
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    origin CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2016-03-16T00:32:56.366000
-CREATE TABLE auth_cas(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    created_on TIMESTAMP,
-    service CHAR(512),
-    ticket CHAR(512),
-    renew CHAR(1)
-);
-success!
-timestamp: 2016-03-16T01:04:59.804000
+timestamp: 2016-03-24T17:46:27.263000
 CREATE TABLE user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email CHAR(128) NOT NULL UNIQUE,
     mobile CHAR(10),
     username CHAR(25) UNIQUE,
-    password CHAR(512) NOT NULL,
+    password CHAR(512),
     user_type CHAR(512),
     dob DATE,
     gender CHAR(512),
@@ -74,92 +19,21 @@ CREATE TABLE user(
     created_on TIMESTAMP
 );
 success!
-success!
-timestamp: 2016-03-16T01:09:47.220000
+timestamp: 2016-03-24T17:46:29.833000
 CREATE TABLE user_group(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(512),
     description TEXT
 );
 success!
-timestamp: 2016-03-16T01:09:47.451000
-CREATE TABLE user_membership(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  
-);
-success!
-timestamp: 2016-03-16T01:09:47.683000
-CREATE TABLE user_permission(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  ,
-    name CHAR(512),
-    table_name CHAR(512),
-    record_id INTEGER
-);
-success!
-timestamp: 2016-03-16T01:09:47.917000
-CREATE TABLE user_event(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    time_stamp TIMESTAMP,
-    client_ip CHAR(512),
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    origin CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2016-03-16T01:09:48.138000
-CREATE TABLE user_cas(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
-    created_on TIMESTAMP,
-    service CHAR(512),
-    ticket CHAR(512),
-    renew CHAR(1)
-);
-success!
-timestamp: 2016-03-16T01:38:16.749000
-CREATE TABLE sellinng_item(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name CHAR(512),
-    seller CHAR(512),
-    category CHAR(512),
-    sub_cat CHAR(512),
-    bill_av CHAR(1),
-    min_bid CHAR(512),
-    max_bid CHAR(512),
-    view_count INTEGER,
-    status INTEGER,
-    image CHAR(512)
-);
-success!
-timestamp: 2016-03-16T01:38:17.090000
-CREATE TABLE item_bid(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    bidder CHAR(512),
-    sellinng_item_id CHAR(512),
-    amount CHAR(512),
-    status CHAR(512)
-);
-success!
-success!
-success!
-success!
-timestamp: 2016-03-16T02:44:25.300000
-CREATE TABLE user_group(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    role CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2016-03-16T02:44:25.516000
+timestamp: 2016-03-24T17:46:30.187000
 CREATE TABLE user_membership(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
     group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  
 );
 success!
-timestamp: 2016-03-16T02:44:30.137000
+timestamp: 2016-03-24T17:46:30.385000
 CREATE TABLE user_event(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -169,32 +43,7 @@ CREATE TABLE user_event(
     description TEXT
 );
 success!
-timestamp: 2016-03-16T02:44:36.440000
-CREATE TABLE user_permission(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  ,
-    name CHAR(512),
-    table_name CHAR(512),
-    record_id INTEGER
-);
-success!
-timestamp: 2016-03-16T02:44:36.658000
-CREATE TABLE user_cas(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
-    created_on TIMESTAMP,
-    service CHAR(512),
-    ticket CHAR(512),
-    renew CHAR(1)
-);
-success!
-timestamp: 2016-03-21T10:16:39.958000
-CREATE TABLE person(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name CHAR(512)
-);
-success!
-timestamp: 2016-03-24T13:47:07.256000
+timestamp: 2016-03-24T17:46:49.622000
 CREATE TABLE user_atrs(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user CHAR(512),
@@ -211,52 +60,68 @@ CREATE TABLE user_atrs(
     referal_code CHAR(512)
 );
 success!
-timestamp: 2016-03-24T13:47:07.748000
-ALTER TABLE sellinng_item ADD current_bid CHAR(512);
-timestamp: 2016-03-24T13:47:07.959000
-ALTER TABLE sellinng_item ADD longi CHAR(512);
-timestamp: 2016-03-24T13:47:08.142000
-ALTER TABLE sellinng_item ADD like_count INTEGER;
-timestamp: 2016-03-24T13:47:08.268000
-ALTER TABLE sellinng_item ADD trans_fee CHAR(512);
-timestamp: 2016-03-24T13:47:08.444000
-ALTER TABLE sellinng_item ADD orig_amnt CHAR(512);
-timestamp: 2016-03-24T13:47:08.607000
-ALTER TABLE sellinng_item ADD need_rev CHAR(512);
-timestamp: 2016-03-24T13:47:08.766000
-ALTER TABLE sellinng_item ADD list_fee CHAR(512);
-timestamp: 2016-03-24T13:47:08.921000
-ALTER TABLE sellinng_item ADD type CHAR(512);
-timestamp: 2016-03-24T13:47:09.073000
-ALTER TABLE sellinng_item ADD expires_on CHAR(512);
-timestamp: 2016-03-24T13:47:09.213000
-ALTER TABLE sellinng_item ADD delivery_type CHAR(512);
-timestamp: 2016-03-24T13:47:09.352000
-ALTER TABLE sellinng_item ADD tags CHAR(512);
-timestamp: 2016-03-24T13:47:09.518000
-ALTER TABLE sellinng_item ADD flag CHAR(512);
-timestamp: 2016-03-24T13:47:09.649000
-ALTER TABLE sellinng_item ADD pr_amnt CHAR(512);
-timestamp: 2016-03-24T13:47:09.794000
-ALTER TABLE sellinng_item ADD current_bid_user CHAR(512);
-timestamp: 2016-03-24T13:47:09.936000
-ALTER TABLE sellinng_item ADD max_no_bids CHAR(512);
-timestamp: 2016-03-24T13:47:10.092000
-ALTER TABLE sellinng_item ADD mobile CHAR(512);
-timestamp: 2016-03-24T13:47:10.219000
-ALTER TABLE sellinng_item ADD lati CHAR(512);
-timestamp: 2016-03-24T13:47:10.351000
-ALTER TABLE sellinng_item ADD descript CHAR(512);
-timestamp: 2016-03-24T13:47:10.484000
-ALTER TABLE sellinng_item ADD autolist CHAR(512);
-timestamp: 2016-03-24T13:47:10.645000
-ALTER TABLE sellinng_item ADD bid_count INTEGER;
-timestamp: 2016-03-24T13:47:10.782000
-ALTER TABLE sellinng_item ADD video CHAR(512);
-timestamp: 2016-03-24T13:47:10.916000
-ALTER TABLE sellinng_item ADD pr_till CHAR(512);
+timestamp: 2016-03-24T17:46:49.858000
+CREATE TABLE user_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES user_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
 success!
-timestamp: 2016-03-24T13:47:11.094000
-ALTER TABLE item_bid ADD bid_item CHAR(512);
+timestamp: 2016-03-24T17:46:50.183000
+CREATE TABLE user_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
 success!
+timestamp: 2016-03-24T17:46:50.388000
+CREATE TABLE sellinng_item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    seller CHAR(512),
+    category CHAR(512),
+    sub_cat CHAR(512),
+    bill_av CHAR(1),
+    min_bid CHAR(512),
+    max_bid CHAR(512),
+    current_bid CHAR(512),
+    current_bid_user CHAR(512),
+    descript CHAR(512),
+    tags CHAR(512),
+    orig_amnt CHAR(512),
+    mobile CHAR(512),
+    expires_on CHAR(512),
+    pr_amnt CHAR(512),
+    pr_till CHAR(512),
+    delivery_type CHAR(512),
+    max_no_bids CHAR(512),
+    view_count INTEGER,
+    like_count INTEGER,
+    bid_count INTEGER,
+    type CHAR(512),
+    status INTEGER,
+    image CHAR(512),
+    video CHAR(512),
+    flag CHAR(512),
+    need_rev CHAR(512),
+    lati CHAR(512),
+    longi CHAR(512),
+    autolist CHAR(512),
+    list_fee CHAR(512),
+    trans_fee CHAR(512)
+);
+success!
+timestamp: 2016-03-24T17:46:50.634000
+CREATE TABLE item_bid(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bidder CHAR(512),
+    bid_item CHAR(512),
+    amount CHAR(512),
+    status CHAR(512)
+);
 success!
