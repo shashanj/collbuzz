@@ -10,7 +10,7 @@ p5
 I00
 sS'sortable'
 p6
-I5
+I4
 sS'sql'
 p7
 S'CHAR(512)'
@@ -22,7 +22,7 @@ sS'type'
 p10
 S'string'
 p11
-ssS'bid_item'
+ssS'credit'
 p12
 (dp13
 g4
@@ -32,50 +32,16 @@ I00
 sg6
 I3
 sg7
-S'INTEGER REFERENCES sellinng_item (id) ON DELETE CASCADE  '
+S'INTEGER REFERENCES credits (id) ON DELETE CASCADE  '
 p14
 sg9
 I00
 sg10
-S'reference sellinng_item'
+S'reference credits'
 p15
-ssS'amount'
+ssS'id'
 p16
 (dp17
-g4
-I512
-sg5
-I00
-sg6
-I4
-sg7
-S'DOUBLE'
-p18
-sg9
-I00
-sg10
-S'double'
-p19
-ssS'bidder'
-p20
-(dp21
-g4
-I512
-sg5
-I00
-sg6
-I2
-sg7
-S'INTEGER REFERENCES user (id) ON DELETE CASCADE  '
-p22
-sg9
-I00
-sg10
-S'reference user'
-p23
-ssS'id'
-p24
-(dp25
 g4
 I512
 sg5
@@ -84,10 +50,26 @@ sg6
 I1
 sg7
 S'INTEGER PRIMARY KEY AUTOINCREMENT'
-p26
+p18
 sg9
 I00
 sg10
-S'id'
-p27
+g16
+ssS'user'
+p19
+(dp20
+g4
+I512
+sg5
+I00
+sg6
+I2
+sg7
+S'INTEGER REFERENCES user (id) ON DELETE CASCADE  '
+p21
+sg9
+I00
+sg10
+S'reference user'
+p22
 ss.

@@ -125,3 +125,77 @@ CREATE TABLE item_bid(
     status CHAR(512)
 );
 success!
+success!
+success!
+success!
+timestamp: 2016-03-27T02:51:44.669000
+CREATE TABLE tasks(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    body TEXT
+);
+success!
+timestamp: 2016-03-27T02:51:44.932000
+CREATE TABLE credits(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    reward INTEGER,
+    tasks TEXT,
+    started_on TIMESTAMP,
+    ends_on TIMESTAMP,
+    active CHAR(1),
+    timestamp TIMESTAMP
+);
+success!
+timestamp: 2016-03-27T02:51:45.094000
+CREATE TABLE user_credits(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    credit INTEGER REFERENCES credits (id) ON DELETE CASCADE  ,
+    status CHAR(512)
+);
+success!
+timestamp: 2016-03-27T02:51:45.275000
+CREATE TABLE comment_reply(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reply TEXT,
+    item INTEGER REFERENCES sellinng_item (id) ON DELETE CASCADE  ,
+    reply_by INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    like INTEGER,
+    dislike INTEGER,
+    timestamp TIMESTAMP
+);
+success!
+timestamp: 2016-03-27T02:51:45.536000
+CREATE TABLE item_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    comment TEXT,
+    item INTEGER REFERENCES sellinng_item (id) ON DELETE CASCADE  ,
+    comment_by INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    replies TEXT,
+    like INTEGER,
+    dislike INTEGER,
+    timestamp TIMESTAMP
+);
+success!
+timestamp: 2016-03-27T02:51:45.724000
+CREATE TABLE flag_reason(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    body CHAR(512)
+);
+success!
+timestamp: 2016-03-27T02:51:45.940000
+CREATE TABLE flag_ad(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item INTEGER REFERENCES sellinng_item (id) ON DELETE CASCADE  ,
+    flagged_by INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    reason INTEGER REFERENCES flag_reason (id) ON DELETE CASCADE  ,
+    timestamp TIMESTAMP
+);
+success!
+timestamp: 2016-03-27T02:51:46.181000
+CREATE TABLE shortlist(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user INTEGER REFERENCES user (id) ON DELETE CASCADE  ,
+    item TEXT
+);
+success!
