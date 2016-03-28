@@ -45,6 +45,7 @@ db.define_table('item_bid',
 
 db.define_table('tasks',
 	Field('body','text'), # sort of eligilbility
+	Field('state','boolean',default=False), # task within the crdit completed 
 )
 
 db.define_table('credits',
