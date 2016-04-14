@@ -257,10 +257,12 @@ def getUserId():
 	response.view = 'generic.json'
 	def GET(*args,**vars):
 		username = vars['username']
-
-		row = db(db.user.username == username).select().first()
-		id = row.id
-		return dict(id = id)
+		try:
+			row = db(db.user.username == username).select().first()
+			id = row.id
+			return dict(id = id)
+		except:
+			return dict(status='400', message='user does not exist')
 
 	def POST(**vars):
 		pass
@@ -274,10 +276,9 @@ def getUserId():
 	return dict(GET=GET, POST=POST, PUT=PUT, DELETE=DELETE)
 
 @request.restful()
-def getUserDetail():
+def user():
 	response.view = 'generic.json'
 	def GET(user_id):
-
 		row = db(db.user.id == user_id).select().first()
 		return dict(user = row)
 
