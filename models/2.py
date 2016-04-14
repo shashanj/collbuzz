@@ -36,6 +36,13 @@ db.define_table('sellinng_item',
 	format="%(name)s"
 )
 
+db.sellinng_item.mobile.requires = [IS_NOT_EMPTY(error_message = "Enter a Mobile No.!"),IS_MATCH(r'^([7-9]{1})([0-9]{9})$', error_message=T('Enter a Valid phone number')),IS_NOT_IN_DB(db, db.user.mobile, error_message = "Mobile No. already exists!")]
+db.sellinng_item.name.requires = [IS_NOT_EMPTY(error_message = "Enter a name for your product!")]
+db.sellinng_item.category.requires = [IS_NOT_EMPTY(error_message = "Enter the category of your product!")]
+db.sellinng_item.sub_cat.requires = [IS_NOT_EMPTY(error_message = "Enter the sub category of your product!")]
+
+
+
 db.define_table('item_bid',
 	Field('bidder','reference user'),
 	Field('bid_item','reference sellinng_item'),
