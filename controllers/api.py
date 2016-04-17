@@ -207,27 +207,29 @@ def product():
 @request.restful()
 def comment():
 	response.view = 'generic.json'
-	def GET(*args,**vars):
+	def GET(item_id,*args,**vars):
 
 		########### get comments ##############
 		if args[0] == 'all':
+			item = db.sellinng_item[item_id]
 			if len(args) > 1  :
+				
 				upper_limit = 20+int(args[1])*20
 
 				if upper_limit > db(db.item_comment).count():
 					upper_limit =  db(db.item_comment).count()
 
-				row = db(db.item_comment).select(limitby=(0+int(args[1])*20,upper_limit))
+				row = db(db.item_comment.item == item).select(limitby=(0+int(args[1])*20,upper_limit))
 
 			else : 
-				row = db(db.item_comment).select(limitby=(0,20))
-			return dict(items = row)
+				row = db(db.item_comment.item == item).select(limitby=(0,20))
+			return dict(comments = row)
 
 	def POST(**vars):
 		try :
 			comment = vars['comment']
 			item = db.sellinng_item[int(vars['item'])]
-			comment_by = db.users(int(vars['comment_by']))
+			comment_by = db.user(int(vars['comment_by']))
 
 			db.item_comment.insert( comment = comment,
 				item = item,
@@ -248,6 +250,54 @@ def comment():
 	def DELETE(record_id):
 		db(db.item_comment.id==record_id).delete()
 		return dict(status='200',message='comment deleted')
+
+	return dict(GET=GET, POST=POST, PUT=PUT, DELETE=DELETE)
+
+
+@request.restful()
+def reply():
+	response.view = 'generic.json'
+	def GET(*args,**vars):
+
+		########### get comment' s reply by id##############
+		try :
+			queries = []
+			for rep in vars['reply_id'] : 
+				queries.append(db.comment_reply.id == rep)
+			query = reduce(lambda a,b : (a | b),queries)
+			reply = db(query).select()
+			return dict(status = '200', reply = reply)
+
+		except :
+			return dict(message = 'something went wrong ',reply = reply_id)
+
+	def POST(comment_id,**vars):
+		# try :
+		reply = vars['reply']
+		comment = db.item_comment[comment_id]
+		reply_by = db.user(int(vars['reply_by']))
+
+		db.comment_reply.insert( reply = reply,
+			reply_by = reply_by
+		) 
+		added = db(db.comment_reply.reply == reply).select().first()
+		row = db(db.item_comment.id == comment_id).select().first()
+		row.update_record(replies = row.replies + [added])
+
+		return dict(status = '201',message = 'reply for comment created')
+
+		# except :
+		# 	return dict(status = '400',message = 'incomplete application')
+
+	# @auth.requires_login()
+	def PUT(record_id,**vars):
+		db(db.comment_reply.id == record_id).update(**vars)
+		return dict(status = '200',message = 'reply updated')
+
+	# @auth.requires_login()
+	def DELETE(record_id):
+		db(db.comment_reply.id==record_id).delete()
+		return dict(status='200',message='reply deleted')
 
 	return dict(GET=GET, POST=POST, PUT=PUT, DELETE=DELETE)
 
@@ -284,6 +334,62 @@ def user():
 
 	def POST(**vars):
 		pass
+
+	def PUT(record_id,**vars):
+		pass
+
+	def DELETE(record_id):
+		pass
+
+	return dict(GET=GET, POST=POST, PUT=PUT, DELETE=DELETE)
+
+
+@request.restful()
+def bid():
+	response.view = 'generic.json'
+
+	def GET(item_id):
+		try:
+			item = db.sellinng_item[item_id]
+			row = db(db.item_bid.bid_item == item).count()
+			return dict(bidder = row)
+		except :
+			return dict(row = row,message = 'item not available')
+
+	def POST(item_id,**vars):
+		item = db(db.sellinng_item.id == item_id).select().first()
+		user = vars['userid']
+		user = db(db.user.id == user).select().first()
+		amount = float(vars['amount'])
+		if item.current_bid is None :
+			if amount > item.min_bid :
+				db.item_bid.insert(bidder = user,
+					bid_item = item,
+					amount = amount,
+					status = 0)
+				db(db.sellinng_item.id == item_id).update(current_bid = amount,
+														current_bid_user = user)
+				return dict(status='201', message= 'bid done')
+
+			else :
+				return dict(status='400', message= 'bid rejected due to unsufficient amount')
+
+		else:
+			if amount > item.current_bid + item.min_bid :
+				if amount > item.max_bid :
+					return dict(status='400', message= 'bid rejected due to more amount than max bid')
+
+				else:
+					db.item_bid.insert(bidder = user,
+						bid_item = item,
+						amount = amount,
+						status = 0)
+					db(db.sellinng_item.id == item_id).update(current_bid = amount,
+															current_bid_user = user)
+					return dict(status='201', message= 'bid done')
+
+			else :
+				return dict(status='400', message= 'bid rejected due to unsufficient amount')
 
 	def PUT(record_id,**vars):
 		pass

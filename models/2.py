@@ -85,7 +85,6 @@ db.define_table('item_comment',
 
 db.define_table('comment_reply',
 	Field('reply','text'),
-	Field('item','reference sellinng_item'),
 	Field('reply_by','reference user'),
 	Field('like','integer',default=0),
 	Field('dislike','integer',default=0),
