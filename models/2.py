@@ -58,7 +58,7 @@ db.define_table('tasks',
 
 db.define_table('credits',
 	Field('name','string'),
-	Field('reward','integer'), # amount of reward
+	Field('reward','string'), # amount of reward
 	Field('tasks','list:reference tasks'), # many to one relation with tasks
 	Field('started_on','datetime'),
 	Field('ends_on','datetime'),
@@ -69,7 +69,8 @@ db.define_table('credits',
 db.define_table('user_credits', # mapping user for credits they want to score
 	Field('user','reference user'),
 	Field('credit','reference credits'),
-	Field('status', 'string'), # complete, in progres , 
+	Field('status', 'string'), # complete, in progres ,
+	Field('credit_earn', 'double'), # total amount of credits earned if crdit != buy credit then reward amount = credit earned
 	format="%(name)s",
 )
 
